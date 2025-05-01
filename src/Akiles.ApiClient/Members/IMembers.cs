@@ -102,6 +102,49 @@ public interface IMembers
         CancellationToken cancellationToken = default
     );
 
+    [Get("/members/{memberId}/cards")]
+    Task<PagedList<MemberCard>> ListCardsAsync(
+        string memberId,
+        string? cursor,
+        int? limit,
+        Sort<MemberCard>? sort,
+        CancellationToken cancellationToken = default
+    );
+
+    IAsyncEnumerable<MemberCard> ListCardsAsync(string memberId, Sort<MemberCard>? sort = null) =>
+        new PaginationEnumerable<MemberCard>(
+            (cursor, cancellationToken) =>
+                ListCardsAsync(
+                    memberId,
+                    cursor,
+                    Constants.DefaultPaginationLimit,
+                    sort,
+                    cancellationToken
+                )
+        );
+
+    [Get("/members/{memberId}/cards/{memberCardId}")]
+    Task<MemberCard> GetCardAsync(
+        string memberId,
+        string memberCardId,
+        CancellationToken cancellationToken = default
+    );
+
+    [Patch("/members/{memberId}/cards/{memberCardId}")]
+    Task<MemberCard> EditCardAsync(
+        string memberId,
+        string memberCardId,
+        MemberCardPatch patch,
+        CancellationToken cancellationToken = default
+    );
+
+    [Delete("/members/{memberId}/cards/{memberCardId}")]
+    Task<MemberCard> DeleteCardAsync(
+        string memberId,
+        string memberCardId,
+        CancellationToken cancellationToken = default
+    );
+
     [Post("/members/{memberId}/group_associations")]
     Task<MemberGroupAssociation> CreateGroupAssociationAsync(
         string memberId,
@@ -132,6 +175,28 @@ public interface IMembers
                     cancellationToken
                 )
         );
+
+    [Get("/members/{memberId}/group_associations/{memberGroupAssociationId}")]
+    Task<MemberGroupAssociation> GetGroupAssociationAsync(
+        string memberId,
+        string memberGroupAssociationId,
+        CancellationToken cancellationToken = default
+    );
+
+    [Patch("/members/{memberId}/group_associations/{memberGroupAssociationId}")]
+    Task<MemberGroupAssociation> EditGroupAssociationAsync(
+        string memberId,
+        string memberGroupAssociationId,
+        MemberCardPatch patch,
+        CancellationToken cancellationToken = default
+    );
+
+    [Delete("/members/{memberId}/group_associations/{memberGroupAssociationId}")]
+    Task<MemberGroupAssociation> DeleteGroupAssociationAsync(
+        string memberId,
+        string memberGroupAssociationId,
+        CancellationToken cancellationToken = default
+    );
 }
 
 public record ListMembersFilter
