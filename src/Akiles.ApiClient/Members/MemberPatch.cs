@@ -11,5 +11,5 @@ public record MemberPatch
     public Option<bool> IsDeleted { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public Dictionary<string, string>? Metadata { get; set; }
+    public Dictionary<string, string?>? Metadata { get; set; }
 }

@@ -8,5 +8,5 @@ public record MemberGroupPatch
     public List<MemberGroupPermissionRulePatch>? Permissions { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public Dictionary<string, string>? Metadata { get; set; }
+    public Dictionary<string, string?>? Metadata { get; set; }
 }

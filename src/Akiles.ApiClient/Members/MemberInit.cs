@@ -6,5 +6,5 @@ public record MemberInit
     public DateTime? StartsAt { get; init; }
     public DateTime? EndsAt { get; init; }
     public string Language { get; init; } = "";
-    public Dictionary<string, string> Metadata { get; init; } = [];
+    public Dictionary<string, string?> Metadata { get; init; } = [];
 }

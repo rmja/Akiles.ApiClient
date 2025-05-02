@@ -7,7 +7,7 @@ public record MemberCardInit : IValidatableObject
     public string? CardId { get; init; }
     public string? Uid { get; init; }
     public string? PrintedCode { get; init; }
-    public Dictionary<string, string> Metadata { get; init; } = [];
+    public Dictionary<string, string?> Metadata { get; init; } = [];
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {

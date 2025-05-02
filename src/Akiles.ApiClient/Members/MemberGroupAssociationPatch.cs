@@ -9,5 +9,5 @@ public record MemberGroupAssociationPatch
     public Option<DateTime?> EndsAt { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public Dictionary<string, string>? Metadata { get; set; }
+    public Dictionary<string, string?>? Metadata { get; set; }
 }
