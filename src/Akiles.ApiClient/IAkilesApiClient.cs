@@ -1,4 +1,5 @@
-﻿using Akiles.ApiClient.Devices;
+﻿using Akiles.ApiClient.Cards;
+using Akiles.ApiClient.Devices;
 using Akiles.ApiClient.Events;
 using Akiles.ApiClient.Gadgets;
 using Akiles.ApiClient.MemberGroups;
@@ -10,6 +11,7 @@ namespace Akiles.ApiClient;
 
 public interface IAkilesApiClient
 {
+    ICards Cards { get; }
     IDevices Devices { get; }
     IEvents Events { get; }
     IGadgets Gadgets { get; }
