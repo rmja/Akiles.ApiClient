@@ -11,9 +11,9 @@ public class NoValidationWebhookEventBinder : IWebhookBinder
         CancellationToken cancellationToken
     )
     {
-        var evnt = await JsonSerializer.DeserializeAsync<Event>(
+        var evnt = await JsonSerializer.DeserializeAsync(
             body,
-            AkilesApiJsonSerializerOptions.Value,
+            AkilesApiJsonSerializerContext.Default.Event,
             cancellationToken
         );
         return evnt;

@@ -24,7 +24,7 @@ public class WebhookEventBinder(string webhookSecret, ILogger<WebhookEventBinder
     )
     {
         var expectedSignature = Convert.FromHexString(signatureHex);
-        var (evnt, actualSignature) = await DeserializeWithSignatureAsync<Event>(
+        var (evnt, actualSignature) = await DeserializeEventWithSignatureAsync(
             body,
             cancellationToken
         );
@@ -44,16 +44,16 @@ public class WebhookEventBinder(string webhookSecret, ILogger<WebhookEventBinder
         return evnt;
     }
 
-    private async Task<(T? Value, byte[] Signature)> DeserializeWithSignatureAsync<T>(
+    private async Task<(Event? Value, byte[] Signature)> DeserializeEventWithSignatureAsync(
         Stream utf8Stream,
         CancellationToken cancellationToken = default
     )
     {
         using var lease = await utf8Stream.ReadToMemoryAsync(cancellationToken);
         var signature = HMACSHA256.HashData(_secret, lease.Memory.Span);
-        var value = JsonSerializer.Deserialize<T>(
+        var value = JsonSerializer.Deserialize(
             lease.Memory.Span,
-            AkilesApiJsonSerializerOptions.Value
+            AkilesApiJsonSerializerContext.Default.Event
         );
         return (value, signature);
     }

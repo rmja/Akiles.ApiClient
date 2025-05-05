@@ -26,6 +26,7 @@ namespace Akiles.ApiClient;
 [JsonSerializable(typeof(Schedule))]
 [JsonSerializable(typeof(Webhook))]
 [JsonSerializable(typeof(Webhook))]
+[JsonSerializable(typeof(ErrorResponse))]
 [JsonSourceGenerationOptions(
     PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower,
     Converters =

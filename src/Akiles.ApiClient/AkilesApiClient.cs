@@ -30,7 +30,9 @@ public class AkilesApiClient : IAkilesApiClient
                     return null;
                 }
 
-                var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                var error = await response.Content.ReadFromJsonAsync(
+                    AkilesApiJsonSerializerContext.Default.ErrorResponse
+                );
 
                 return new AkilesApiException(error!.Message)
                 {
