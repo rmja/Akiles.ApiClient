@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using System.Text.Json;
 using System.Text.Json.Serialization;
+using Akiles.ApiClient.JsonConverters;
 
 namespace Akiles.ApiClient.Schedules;
 
@@ -32,7 +32,7 @@ public class WeekdayArray<T> : IReadOnlyList<T>
     {
         if (storage.Length != 7)
         {
-            throw new ArgumentException();
+            throw new ArgumentException(null, nameof(storage));
         }
 
         _storage = storage;
@@ -48,49 +48,12 @@ public class WeekdayArray<T> : IReadOnlyList<T>
             DayOfWeek.Friday => 4,
             DayOfWeek.Saturday => 5,
             DayOfWeek.Sunday => 6,
-            _ => throw new ArgumentException()
+            _ => throw new ArgumentException(null, nameof(weekday))
         };
+
+    internal T[] GetArray() => _storage;
 
     public IEnumerator<T> GetEnumerator() => _storage.Select(x => x).GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-    internal class JsonConverter : JsonConverter<WeekdayArray<T>>
-    {
-        public override WeekdayArray<T>? Read(
-            ref Utf8JsonReader reader,
-            Type typeToConvert,
-            JsonSerializerOptions options
-        )
-        {
-            var storage = JsonSerializer.Deserialize<T[]>(ref reader, options)!;
-            return new WeekdayArray<T>(storage);
-        }
-
-        public override void Write(
-            Utf8JsonWriter writer,
-            WeekdayArray<T> value,
-            JsonSerializerOptions options
-        )
-        {
-            JsonSerializer.Serialize(writer, value._storage, options);
-        }
-    }
-}
-
-file class WeekdayArrayJsonConverter : JsonConverterFactory
-{
-    public override bool CanConvert(Type typeToConvert) =>
-        typeToConvert.IsGenericType
-        && typeToConvert.GetGenericTypeDefinition() == typeof(WeekdayArray<>);
-
-    public override JsonConverter? CreateConverter(
-        Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        var itemType = typeToConvert.GetGenericArguments()[0];
-        var converterType = typeof(WeekdayArray<>.JsonConverter).MakeGenericType(itemType);
-        return (JsonConverter)Activator.CreateInstance(converterType)!;
-    }
 }

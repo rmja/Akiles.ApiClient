@@ -2,7 +2,7 @@
 
 namespace Akiles.ApiClient.Cards;
 
-public record CardInit
+public record CardInit : IValidatableObject
 {
     public string? Name { get; init; }
 
