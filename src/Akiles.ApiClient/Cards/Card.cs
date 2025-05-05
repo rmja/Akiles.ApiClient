@@ -12,6 +12,5 @@ public record Card
     /// </summary>
     public string? Uid { get; init; }
     public string? PrintedCode { get; init; }
-    public bool IsDeleted { get; set; }
     public Dictionary<string, string> Metadata { get; set; } = [];
 }
