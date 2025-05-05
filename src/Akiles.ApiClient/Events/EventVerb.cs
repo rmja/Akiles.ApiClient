@@ -1,5 +1,9 @@
-﻿namespace Akiles.ApiClient.Events;
+﻿using System.Text.Json.Serialization;
+using Akiles.ApiClient.JsonConverters;
 
+namespace Akiles.ApiClient.Events;
+
+[JsonConverter(typeof(SnakeCaseLowerJsonStringEnumConverter<EventVerb>))]
 public enum EventVerb
 {
     Create,

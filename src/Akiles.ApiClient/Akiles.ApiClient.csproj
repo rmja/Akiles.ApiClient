@@ -17,6 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Akiles.ApiClient.Tests" />
     <None Include="..\..\README.md" Pack="true" PackagePath="">
       <Link>Properties\README.md</Link>
     </None>	

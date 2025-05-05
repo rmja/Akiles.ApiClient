@@ -1,4 +1,5 @@
-﻿using LanguageExt;
+﻿using System.Text.Json.Serialization;
+using LanguageExt;
 
 namespace Akiles.ApiClient.MemberGroups;
 
@@ -8,6 +9,10 @@ public record MemberGroupPermissionRulePatch
     public Option<string?> GadgetId { get; set; }
     public Option<string?> ActionId { get; set; }
     public Option<string?> ScheduleId { get; set; }
-    public Option<MemberGroupPermissionRulePresence> Presence { get; set; }
-    public Option<MemberGroupPermissionRuleAccessMethodsPatch> AccessMethods { get; set; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public MemberGroupPermissionRulePresence? Presence { get; set; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public MemberGroupPermissionRuleAccessMethodsPatch? AccessMethods { get; set; }
 }

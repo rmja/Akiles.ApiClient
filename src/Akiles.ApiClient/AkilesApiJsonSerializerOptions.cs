@@ -1,31 +1,22 @@
 ﻿using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
-using Akiles.ApiClient.JsonConverters;
 using LanguageExt;
 
 namespace Akiles.ApiClient;
 
 public static class AkilesApiJsonSerializerOptions
 {
-    public static readonly JsonSerializerOptions Value =
-        new()
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
-            Converters =
-            {
-                new JsonStringEnumConverter(
-                    JsonNamingPolicy.SnakeCaseLower,
-                    allowIntegerValues: false
-                ),
-                new TimeOnlyJsonConverter(),
-                new OptionJsonConverter()
-            },
-            TypeInfoResolver = new DefaultJsonTypeInfoResolver()
-            {
-                Modifiers = { ExcludeOptionNoneVariant }
-            }
-        };
+    public static JsonSerializerOptions Value { get; } = CreateOptions();
+
+    private static JsonSerializerOptions CreateOptions()
+    {
+        var options = new JsonSerializerOptions(AkilesApiJsonSerializerContext.Default.Options);
+        options.TypeInfoResolverChain.Insert(
+            0,
+            new DefaultJsonTypeInfoResolver() { Modifiers = { ExcludeOptionNoneVariant } }
+        );
+        return options;
+    }
 
     private static void ExcludeOptionNoneVariant(JsonTypeInfo typeInfo)
     {

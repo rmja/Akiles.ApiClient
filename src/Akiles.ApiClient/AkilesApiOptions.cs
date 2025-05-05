@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Akiles.ApiClient;
+﻿namespace Akiles.ApiClient;
 
 public class AkilesApiOptions
 {
