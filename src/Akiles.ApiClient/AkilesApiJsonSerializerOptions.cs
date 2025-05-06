@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using LanguageExt;
 
@@ -8,6 +9,11 @@ public static class AkilesApiJsonSerializerOptions
 {
     public static JsonSerializerOptions Value { get; } = CreateOptions();
 
+    [UnconditionalSuppressMessage(
+        "ReflectionAnalysis",
+        "IL2026:RequiresUnreferencedCode",
+        Justification = "All types are already marked as JsonSerializable."
+    )]
     private static JsonSerializerOptions CreateOptions()
     {
         var options = new JsonSerializerOptions(AkilesApiJsonSerializerContext.Default.Options);
@@ -27,9 +33,16 @@ public static class AkilesApiJsonSerializerOptions
                 && property.PropertyType.GetGenericTypeDefinition() == typeof(Option<>)
             )
             {
-                property.ShouldSerialize = static (_, value) =>
-                    !value!.Equals(Activator.CreateInstance(value.GetType()));
+                property.ShouldSerialize = static (_, value) => IsSome(value!);
             }
+        }
+
+        static bool IsSome(object value)
+        {
+#pragma warning disable IL2072
+            var defaultValue = Activator.CreateInstance(value.GetType());
+#pragma warning restore IL2072
+            return !value.Equals(defaultValue);
         }
     }
 }

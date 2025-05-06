@@ -88,6 +88,14 @@ public interface IMembers
                 )
         );
 
+    [Patch("/members/{memberId}/emails/{memberEmailId}")]
+    Task<MemberEmail> EditEmailAsync(
+        string memberId,
+        string memberEmailId,
+        MemberEmailPatch patch,
+        CancellationToken cancellationToken = default
+    );
+
     [Post("/members/{memberId}/pins")]
     Task<MemberPinRevealed> CreatePinAsync(
         string memberId,

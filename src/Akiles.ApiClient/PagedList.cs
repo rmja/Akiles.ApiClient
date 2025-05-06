@@ -1,10 +1,7 @@
 ﻿using System.Collections;
-using System.Text.Json.Serialization;
-using Akiles.ApiClient.JsonConverters;
 
 namespace Akiles.ApiClient;
 
-[JsonConverter(typeof(PagedListJsonConverter))]
 public class PagedList<T> : IEnumerable<T>
 {
     public List<T> Data { get; set; } = [];

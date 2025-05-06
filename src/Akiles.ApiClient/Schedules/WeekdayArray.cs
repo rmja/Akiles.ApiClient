@@ -1,10 +1,7 @@
 ﻿using System.Collections;
-using System.Text.Json.Serialization;
-using Akiles.ApiClient.JsonConverters;
 
 namespace Akiles.ApiClient.Schedules;
 
-[JsonConverter(typeof(WeekdayArrayJsonConverter))]
 public class WeekdayArray<T> : IReadOnlyList<T>
 {
     private readonly T[] _storage;
