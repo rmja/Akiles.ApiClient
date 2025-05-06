@@ -76,48 +76,20 @@ public class AkilesApiClient : IAkilesApiClient
         public string Format(string key) => namingPolicy.ConvertName(key);
     }
 
-    class ParameterFormatter(JsonNamingPolicy namingPolicy) : IUrlParameterFormatter
+    class ParameterFormatter() : IUrlParameterFormatter
     {
         public IUrlParameterFormatter Next { get; set; } = new DefaultUrlParameterFormatter();
 
-        public ParameterFormatter()
-            : this(JsonNamingPolicy.SnakeCaseLower) { }
-
         public string? Format(object? value, ICustomAttributeProvider attributeProvider, Type type)
         {
-            if (value is not null)
+            var formatter = (IUrlParameterFormatter?)
+                value
+                    ?.GetType()
+                    .GetCustomAttributes()
+                    .FirstOrDefault(x => x is IUrlParameterFormatter);
+            if (formatter is not null)
             {
-                var valueType = value.GetType();
-
-                if (valueType.IsEnum && valueType.IsDefined(typeof(FlagsAttribute)))
-                {
-                    var enumValue = (Enum)value;
-                    var flags = Enum.GetValues(valueType)
-                        .Cast<Enum>()
-                        .Where(x => !IsDefaultValue(x))
-                        .Where(enumValue.HasFlag);
-
-                    if (!flags.Any())
-                    {
-                        return null;
-                    }
-
-                    var names = flags.Select(x =>
-                        namingPolicy.ConvertName(Enum.GetName(valueType, x)!)
-                    );
-                    return string.Join(",", names);
-
-                    static bool IsDefaultValue(Enum value) =>
-                        value.Equals(Activator.CreateInstance(value.GetType()));
-                }
-                else if (valueType.IsEnum)
-                {
-                    var name = Enum.GetName(valueType, value);
-                    if (name is not null)
-                    {
-                        return namingPolicy.ConvertName(name);
-                    }
-                }
+                return formatter.Format(value, attributeProvider, type);
             }
 
             return Next.Format(value, attributeProvider, type);
