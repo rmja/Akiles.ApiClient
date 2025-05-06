@@ -12,6 +12,11 @@ internal class WeekdayArrayJsonConverter<T> : JsonConverter<WeekdayArray<T>>
         "IL2026:RequiresUnreferencedCode",
         Justification = "Inner value is referenced."
     )]
+    [UnconditionalSuppressMessage(
+        "AOT",
+        "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.",
+        Justification = "Inner value is referenced."
+    )]
     public override WeekdayArray<T>? Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
@@ -25,6 +30,11 @@ internal class WeekdayArrayJsonConverter<T> : JsonConverter<WeekdayArray<T>>
     [UnconditionalSuppressMessage(
         "ReflectionAnalysis",
         "IL2026:RequiresUnreferencedCode",
+        Justification = "Inner value is referenced."
+    )]
+    [UnconditionalSuppressMessage(
+        "AOT",
+        "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.",
         Justification = "Inner value is referenced."
     )]
     public override void Write(

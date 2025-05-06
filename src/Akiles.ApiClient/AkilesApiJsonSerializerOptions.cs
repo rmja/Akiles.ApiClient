@@ -14,6 +14,11 @@ public static class AkilesApiJsonSerializerOptions
         "IL2026:RequiresUnreferencedCode",
         Justification = "All types are already marked as JsonSerializable."
     )]
+    [UnconditionalSuppressMessage(
+        "AOT",
+        "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.",
+        Justification = "All types are already marked as JsonSerializable."
+    )]
     private static JsonSerializerOptions CreateOptions()
     {
         var options = new JsonSerializerOptions(AkilesApiJsonSerializerContext.Default.Options);
