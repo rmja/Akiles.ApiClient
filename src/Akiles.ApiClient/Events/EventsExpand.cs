@@ -1,7 +1,6 @@
 ﻿namespace Akiles.ApiClient.Events;
 
 [Flags]
-[EnumParameterFormatter<EventsExpand>]
 public enum EventsExpand
 {
     None = 0x0000,

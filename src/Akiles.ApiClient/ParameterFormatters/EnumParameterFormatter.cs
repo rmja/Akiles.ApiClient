@@ -1,23 +1,17 @@
-﻿using System.Reflection;
-using System.Text.Json;
-using Refit;
+﻿using System.Text.Json;
 
-namespace Akiles.ApiClient;
+namespace Akiles.ApiClient.ParameterFormatters;
 
-[AttributeUsage(AttributeTargets.Enum)]
-internal class EnumParameterFormatterAttribute<TEnum> : Attribute, IUrlParameterFormatter
+internal class EnumParameterFormatter<TEnum> : UrlParameterFormatter<TEnum>
     where TEnum : struct, Enum
 {
     public JsonNamingPolicy NamingPolicy { get; set; } = JsonNamingPolicy.SnakeCaseLower;
 
     static readonly TEnum[]? _flags = typeof(TEnum).IsDefined(typeof(FlagsAttribute), false)
-        ? Enum.GetValues<TEnum>().Where(x => !x.Equals(default(TEnum))).ToArray()
+        ? [.. Enum.GetValues<TEnum>().Where(x => !x.Equals(default(TEnum)))]
         : null;
 
-    public string? Format(object? value, ICustomAttributeProvider attributeProvider, Type type) =>
-        value is TEnum enumValue ? Format(enumValue) : null;
-
-    public string? Format(TEnum value)
+    protected override string? Format(TEnum value)
     {
         if (_flags is null)
         {

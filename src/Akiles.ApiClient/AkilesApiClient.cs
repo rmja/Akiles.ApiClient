@@ -1,12 +1,11 @@
 ﻿using System.Net.Http.Json;
-using System.Reflection;
-using System.Text.Json;
 using Akiles.ApiClient.Cards;
 using Akiles.ApiClient.Devices;
 using Akiles.ApiClient.Events;
 using Akiles.ApiClient.Gadgets;
 using Akiles.ApiClient.MemberGroups;
 using Akiles.ApiClient.Members;
+using Akiles.ApiClient.ParameterFormatters;
 using Akiles.ApiClient.Schedules;
 using Akiles.ApiClient.Webhooks;
 using Refit;
@@ -22,7 +21,13 @@ public class AkilesApiClient : IAkilesApiClient
                 AkilesApiJsonSerializerOptions.Value
             ),
             UrlParameterKeyFormatter = new ParameterKeyFormatter(),
-            UrlParameterFormatter = new ParameterFormatter(),
+            UrlParameterFormatter = new CompositeParameterFormatter(
+                new EnumParameterFormatter<EventsExpand>(),
+                new EnumParameterFormatter<IsDeleted>(),
+                new EnumParameterFormatter<MemberGroupsExpand>(),
+                new EnumParameterFormatter<MembersExpand>(),
+                new DefaultUrlParameterFormatter()
+            ),
             ExceptionFactory = async (response) =>
             {
                 if (response.IsSuccessStatusCode)
@@ -66,33 +71,5 @@ public class AkilesApiClient : IAkilesApiClient
         MemberGroups = RestService.For<IMemberGroups>(httpClient, _refitSettings);
         Schedules = RestService.For<ISchedules>(httpClient, _refitSettings);
         Webhooks = RestService.For<IWebhooks>(httpClient, _refitSettings);
-    }
-
-    class ParameterKeyFormatter(JsonNamingPolicy namingPolicy) : IUrlParameterKeyFormatter
-    {
-        public ParameterKeyFormatter()
-            : this(JsonNamingPolicy.SnakeCaseLower) { }
-
-        public string Format(string key) => namingPolicy.ConvertName(key);
-    }
-
-    class ParameterFormatter() : IUrlParameterFormatter
-    {
-        public IUrlParameterFormatter Next { get; set; } = new DefaultUrlParameterFormatter();
-
-        public string? Format(object? value, ICustomAttributeProvider attributeProvider, Type type)
-        {
-            var formatter = (IUrlParameterFormatter?)
-                value
-                    ?.GetType()
-                    .GetCustomAttributes()
-                    .FirstOrDefault(x => x is IUrlParameterFormatter);
-            if (formatter is not null)
-            {
-                return formatter.Format(value, attributeProvider, type);
-            }
-
-            return Next.Format(value, attributeProvider, type);
-        }
     }
 }

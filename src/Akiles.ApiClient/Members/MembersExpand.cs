@@ -1,7 +1,6 @@
 ﻿namespace Akiles.ApiClient.Members;
 
 [Flags]
-[EnumParameterFormatter<MembersExpand>]
 public enum MembersExpand
 {
     None = 0x00,
