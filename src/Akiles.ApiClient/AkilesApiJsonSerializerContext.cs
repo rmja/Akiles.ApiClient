@@ -18,6 +18,7 @@ namespace Akiles.ApiClient;
 [JsonSerializable(typeof(ErrorResponse))]
 [JsonSerializable(typeof(Event))]
 [JsonSerializable(typeof(Gadget))]
+[JsonSerializable(typeof(GadgetPatch))]
 [JsonSerializable(typeof(List<MemberCard>))]
 [JsonSerializable(typeof(List<MemberEmail>))]
 [JsonSerializable(typeof(List<MemberGroupAssociation>))]
