@@ -2,6 +2,8 @@
 Unofficial API client for [Akiles Access Control](https://akiles.app).
 A prerelease package is availble on nuget [![Akiles.ApiClient](https://img.shields.io/nuget/vpre/Akiles.ApiClient.svg)](https://www.nuget.org/packages/Akiles.ApiClient)
 
+The client is native aot compatible.
+
 ## Usage
 The Akiles API can be used in two ways. Either with an obtained bearer access token ([see doc](https://apidoc.akiles.app/#tag-oauth)) or with a dedicated API key, that can be obtained through Akiles Support.
 The client supports both types of keys.
