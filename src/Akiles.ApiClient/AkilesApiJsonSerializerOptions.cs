@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using LanguageExt;
 
@@ -7,27 +6,13 @@ namespace Akiles.ApiClient;
 
 public static class AkilesApiJsonSerializerOptions
 {
-    public static JsonSerializerOptions Value { get; } = CreateOptions();
-
-    [UnconditionalSuppressMessage(
-        "ReflectionAnalysis",
-        "IL2026:RequiresUnreferencedCode",
-        Justification = "All types are already marked as JsonSerializable."
-    )]
-    [UnconditionalSuppressMessage(
-        "AOT",
-        "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.",
-        Justification = "All types are already marked as JsonSerializable."
-    )]
-    private static JsonSerializerOptions CreateOptions()
-    {
-        var options = new JsonSerializerOptions(AkilesApiJsonSerializerContext.Default.Options);
-        options.TypeInfoResolverChain.Insert(
-            0,
-            new DefaultJsonTypeInfoResolver() { Modifiers = { ExcludeOptionNoneVariant } }
-        );
-        return options;
-    }
+    public static JsonSerializerOptions Value { get; } =
+        new JsonSerializerOptions(AkilesApiJsonSerializerContext.Default.Options)
+        {
+            TypeInfoResolver = AkilesApiJsonSerializerContext.Default.WithAddedModifier(
+                ExcludeOptionNoneVariant
+            )
+        };
 
     private static void ExcludeOptionNoneVariant(JsonTypeInfo typeInfo)
     {

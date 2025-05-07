@@ -48,8 +48,6 @@ public class WeekdayArray<T> : IReadOnlyList<T>
             _ => throw new ArgumentException(null, nameof(weekday))
         };
 
-    internal T[] GetArray() => _storage;
-
     public IEnumerator<T> GetEnumerator() => _storage.Select(x => x).GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -27,7 +28,15 @@ internal class PagedListJsonConverter<T> : JsonConverter<PagedList<T>>
         {
             if (reader.ValueTextEquals("data"u8))
             {
-                page.Data = JsonSerializer.Deserialize<List<T>>(ref reader, options)!;
+                reader.Read();
+                if (reader.TokenType == JsonTokenType.StartArray)
+                {
+                    while (reader.Read() && reader.TokenType != JsonTokenType.EndArray)
+                    {
+                        var item = JsonSerializer.Deserialize<T>(ref reader, options)!;
+                        page.Data.Add(item);
+                    }
+                }
             }
             else if (reader.ValueTextEquals("has_next"u8))
             {
@@ -62,7 +71,12 @@ internal class PagedListJsonConverter<T> : JsonConverter<PagedList<T>>
     {
         writer.WriteStartObject();
         writer.WritePropertyName("data"u8);
-        JsonSerializer.Serialize(writer, value.Data, options);
+        writer.WriteStartArray();
+        foreach (var item in value.Data)
+        {
+            JsonSerializer.Serialize(writer, item, options);
+        }
+        writer.WriteEndArray();
         writer.WriteBoolean("has_next"u8, value.HasNext);
         if (value.CursorNext is not null)
         {

@@ -23,7 +23,19 @@ internal class WeekdayArrayJsonConverter<T> : JsonConverter<WeekdayArray<T>>
         JsonSerializerOptions options
     )
     {
-        var storage = JsonSerializer.Deserialize<T[]>(ref reader, options)!;
+        if (reader.TokenType != JsonTokenType.StartArray)
+        {
+            throw new JsonException();
+        }
+
+        var storage = new T[7];
+        var index = 0;
+        while (reader.Read() && reader.TokenType != JsonTokenType.EndArray)
+        {
+            var item = JsonSerializer.Deserialize<T>(ref reader, options)!;
+            storage[index++] = item;
+        }
+
         return new WeekdayArray<T>(storage);
     }
 
@@ -43,6 +55,11 @@ internal class WeekdayArrayJsonConverter<T> : JsonConverter<WeekdayArray<T>>
         JsonSerializerOptions options
     )
     {
-        JsonSerializer.Serialize(writer, value.GetArray(), options);
+        writer.WriteStartArray();
+        foreach (var item in value)
+        {
+            JsonSerializer.Serialize(writer, item, options);
+        }
+        writer.WriteEndArray();
     }
 }
