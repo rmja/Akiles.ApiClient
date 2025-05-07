@@ -31,27 +31,3 @@ public interface IEvents
                 )
         );
 }
-
-public record ListEventsFilter
-{
-    public EventVerb? Verb { get; set; }
-    public ListEventsSubjectFilter? Subject { get; set; }
-    public ListEventsObjectFilter? Object { get; set; }
-}
-
-public record ListEventsSubjectFilter
-{
-    public string? MemberId { get; set; }
-    public string? MemberPinId { get; set; }
-    public string? MemberCardId { get; set; }
-    public string? MemberTokenId { get; set; }
-}
-
-public record ListEventsObjectFilter
-{
-    public EventObjectType? Type { get; set; }
-    public string? DeviceId { get; set; }
-    public string? GadgetId { get; set; }
-    public string? GadgetActionId { get; set; }
-    public string? MemberId { get; set; }
-}
