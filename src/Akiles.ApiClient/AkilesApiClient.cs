@@ -66,7 +66,7 @@ public class AkilesApiClient : IAkilesApiClient
         Cards = RestService.For<ICards>(httpClient, _refitSettings);
         Devices = RestService.For<IDevices>(httpClient, _refitSettings);
         Events = RestService.For<IEvents>(httpClient, _refitSettings);
-        Gadgets = RestService.For<IGadgets>(httpClient, _refitSettings);
+        Gadgets = new GadgetsWrapper(RestService.For<IGadgetsInternal>(httpClient, _refitSettings));
         Members = RestService.For<IMembers>(httpClient, _refitSettings);
         MemberGroups = RestService.For<IMemberGroups>(httpClient, _refitSettings);
         Schedules = RestService.For<ISchedules>(httpClient, _refitSettings);
