@@ -26,6 +26,7 @@ public class AkilesApiClient : IAkilesApiClient
                 new EnumParameterFormatter<IsDeleted>(),
                 new EnumParameterFormatter<MemberGroupsExpand>(),
                 new EnumParameterFormatter<MembersExpand>(),
+                new DateTimeOffsetParameterFormatter(),
                 new DefaultUrlParameterFormatter()
             ),
             ExceptionFactory = async (response) =>

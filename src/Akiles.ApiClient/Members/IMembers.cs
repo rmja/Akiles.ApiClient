@@ -9,7 +9,7 @@ public interface IMembers
         string? cursor,
         int? limit,
         Sort<Member>? sort,
-        ListMembersFilter? filter = null,
+        [Query(delimiter: "")] ListMembersFilter? filter = null,
         MembersExpand expand = MembersExpand.None,
         CancellationToken cancellationToken = default
     );

@@ -9,7 +9,7 @@ public interface IEvents
         string? cursor,
         int? limit,
         Sort<Event>? sort,
-        ListEventsFilter? filter = null,
+        [Query(delimiter: "")] ListEventsFilter? filter = null,
         EventsExpand expand = EventsExpand.None,
         CancellationToken cancellationToken = default
     );

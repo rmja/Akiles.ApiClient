@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
+using System.Text.Encodings.Web;
 using Akiles.ApiClient.Members;
 
 namespace Akiles.ApiClient.Tests;
@@ -30,7 +31,12 @@ public class RefitConfigurationTests
                 {
                     Email = "email",
                     IsDeleted = IsDeleted.Any,
-                    Metadata = new() { ["source"] = "hello" }
+                    Metadata = new() { ["source"] = "hello" },
+                    CreatedAt = new()
+                    {
+                        GreaterThanOrEqual = new(2025, 01, 01, 00, 00, 00, TimeSpan.FromHours(1)),
+                        LessThan = new(2025, 02, 01, 00, 00, 00, TimeSpan.FromHours(1))
+                    }
                 },
                 expand
             )
@@ -39,7 +45,7 @@ public class RefitConfigurationTests
         // Then
         var request = Assert.Single(fakeMessageHandler.RequestMessages);
         Assert.Equal(
-            "?limit=100&sort=created_at%3Adesc&is_deleted=any&email=email&metadata.source=hello"
+            "?limit=100&sort=created_at%3Adesc&is_deleted=any&email=email&metadata.source=hello&created_at%3Age=2025-01-01T00%3A00%3A00.0000000%2B01%3A00&created_at%3Alt=2025-02-01T00%3A00%3A00.0000000%2B01%3A00"
                 + expectedExpand,
             request.RequestUri?.Query
         );
