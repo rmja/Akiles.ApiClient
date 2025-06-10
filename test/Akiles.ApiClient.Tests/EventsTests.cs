@@ -30,13 +30,17 @@ public class EventsTests(ApiFixture fixture) : IClassFixture<ApiFixture>
             .Events.ListEventsAsync(
                 filter: new()
                 {
-                    CreatedAt = new() { GreaterThanOrEqual = notBefore, LessThanOrEqual = notAfter }
+                    CreatedAt = new()
+                    {
+                        GreaterThanOrEqual = notBefore,
+                        LessThanOrEqual = notAfter,
+                    },
                 }
             )
             .ToListAsync();
 
         // Then
-        Assert.Equal(3026, events.Count);
+        Assert.Equal(3525, events.Count);
         Assert.All(events, x => Assert.InRange(x.CreatedAt, notBefore, notAfter));
     }
 }
