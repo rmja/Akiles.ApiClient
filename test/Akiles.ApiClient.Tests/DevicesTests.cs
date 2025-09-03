@@ -10,7 +10,9 @@ public class DevicesTests(ApiFixture fixture) : IClassFixture<ApiFixture>
         // Given
 
         // When
-        var devices = await _client.Devices.ListDevicesAsync().ToListAsync();
+        var devices = await _client
+            .Devices.ListDevicesAsync()
+            .ToListAsync(TestContext.Current.CancellationToken);
 
         // Then
         Assert.NotEmpty(devices);

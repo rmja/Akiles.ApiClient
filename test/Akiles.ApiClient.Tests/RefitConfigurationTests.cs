@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using System.Text.Encodings.Web;
 using Akiles.ApiClient.Members;
 
 namespace Akiles.ApiClient.Tests;
@@ -35,12 +34,12 @@ public class RefitConfigurationTests
                     CreatedAt = new()
                     {
                         GreaterThanOrEqual = new(2025, 01, 01, 00, 00, 00, TimeSpan.FromHours(1)),
-                        LessThan = new(2025, 02, 01, 00, 00, 00, TimeSpan.FromHours(1))
-                    }
+                        LessThan = new(2025, 02, 01, 00, 00, 00, TimeSpan.FromHours(1)),
+                    },
                 },
                 expand
             )
-            .ToListAsync();
+            .ToListAsync(TestContext.Current.CancellationToken);
 
         // Then
         var request = Assert.Single(fakeMessageHandler.RequestMessages);
@@ -69,7 +68,7 @@ public class RefitConfigurationTests
                     Content = JsonContent.Create(
                         content,
                         options: AkilesApiJsonSerializerOptions.Value
-                    )
+                    ),
                 }
             );
         }

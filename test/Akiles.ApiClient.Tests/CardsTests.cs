@@ -10,7 +10,9 @@ public class CardsTests(ApiFixture fixture) : IClassFixture<ApiFixture>
         // Given
 
         // When
-        var cards = await _client.Cards.ListCardsAsync().ToListAsync();
+        var cards = await _client
+            .Cards.ListCardsAsync()
+            .ToListAsync(TestContext.Current.CancellationToken);
 
         // Then
         Assert.Empty(cards);

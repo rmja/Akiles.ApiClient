@@ -12,7 +12,9 @@ public class MembersTests(ApiFixture fixture) : IClassFixture<ApiFixture>
         // Given
 
         // When
-        var members = await _client.Members.ListMembersAsync().ToListAsync();
+        var members = await _client
+            .Members.ListMembersAsync()
+            .ToListAsync(TestContext.Current.CancellationToken);
 
         // Then
         Assert.NotEmpty(members);
@@ -26,7 +28,7 @@ public class MembersTests(ApiFixture fixture) : IClassFixture<ApiFixture>
         // When
         var members = await _client
             .Members.ListMembersAsync(expand: MembersExpand.Emails)
-            .ToListAsync();
+            .ToListAsync(TestContext.Current.CancellationToken);
 
         // Then
         Assert.NotEmpty(members);

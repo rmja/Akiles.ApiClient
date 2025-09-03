@@ -12,7 +12,9 @@ public class SchedulesTests(ApiFixture fixture) : IClassFixture<ApiFixture>
         // Given
 
         // When
-        var schedules = await _client.Schedules.ListSchedulesAsync().ToListAsync();
+        var schedules = await _client
+            .Schedules.ListSchedulesAsync()
+            .ToListAsync(TestContext.Current.CancellationToken);
 
         // Then
         Assert.Single(schedules);
@@ -24,7 +26,10 @@ public class SchedulesTests(ApiFixture fixture) : IClassFixture<ApiFixture>
         // Given
 
         // When
-        var schedule = await _client.Schedules.GetScheduleAsync("sch_41djhl5mae8q65bysuxh");
+        var schedule = await _client.Schedules.GetScheduleAsync(
+            "sch_41djhl5mae8q65bysuxh",
+            TestContext.Current.CancellationToken
+        );
 
         // Then
         Assert.Equal(7, schedule.Weekdays.Count);

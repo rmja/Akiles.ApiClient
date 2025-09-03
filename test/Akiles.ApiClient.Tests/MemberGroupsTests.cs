@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using Akiles.ApiClient.MemberGroups;
+﻿using Akiles.ApiClient.MemberGroups;
 
 namespace Akiles.ApiClient.Tests;
 
@@ -13,7 +12,9 @@ public class MemberGroupsTests(ApiFixture fixture) : IClassFixture<ApiFixture>
         // Given
 
         // When
-        var groups = await _client.MemberGroups.ListMemberGroupsAsync().ToListAsync();
+        var groups = await _client
+            .MemberGroups.ListMemberGroupsAsync()
+            .ToListAsync(TestContext.Current.CancellationToken);
 
         // Then
         Assert.NotEmpty(groups);
@@ -25,7 +26,10 @@ public class MemberGroupsTests(ApiFixture fixture) : IClassFixture<ApiFixture>
         // Given
 
         // When
-        var group = await _client.MemberGroups.GetMemberGroupAsync("mg_41hmmbk2u95nk44jxdkh");
+        var group = await _client.MemberGroups.GetMemberGroupAsync(
+            "mg_41hmmbk2u95nk44jxdkh",
+            TestContext.Current.CancellationToken
+        );
 
         // Then
         Assert.Equal("TEST", group.Name);
@@ -43,16 +47,17 @@ public class MemberGroupsTests(ApiFixture fixture) : IClassFixture<ApiFixture>
                 {
                     AccessMethods = new MemberGroupPermissionRuleAccessMethodsPatch()
                     {
-                        Card = true
-                    }
-                }
-            ]
+                        Card = true,
+                    },
+                },
+            ],
         };
 
         // When
         var group = await _client.MemberGroups.EditMemberGroupAsync(
             "mg_41hmmbk2u95nk44jxdkh",
-            patch
+            patch,
+            TestContext.Current.CancellationToken
         );
 
         // Then

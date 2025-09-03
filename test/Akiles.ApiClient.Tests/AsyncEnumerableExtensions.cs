@@ -1,23 +1,16 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace Akiles.ApiClient.Tests;
+﻿namespace Akiles.ApiClient.Tests;
 
 internal static class AsyncEnumerableExtensions
 {
-    public static async IAsyncEnumerable<T> TakeAsync<T>(
-        this IAsyncEnumerable<T> source,
-        int count,
-        [EnumeratorCancellation] CancellationToken cancellationToken = default
-    )
+    public static async IAsyncEnumerable<T> TakeAsync<T>(this IAsyncEnumerable<T> source, int count)
     {
         if (count == 0)
         {
             yield break;
         }
 
-        await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
+        await foreach (var item in source.ConfigureAwait(false))
         {
-            cancellationToken.ThrowIfCancellationRequested();
             yield return item;
             count--;
             if (count == 0)

@@ -10,7 +10,10 @@ public class EventsTests(ApiFixture fixture) : IClassFixture<ApiFixture>
         // Given
 
         // When
-        var events = await _client.Events.ListEventsAsync().TakeAsync(200).ToListAsync();
+        var events = await _client
+            .Events.ListEventsAsync()
+            .TakeAsync(200)
+            .ToListAsync(TestContext.Current.CancellationToken);
 
         // Then
         Assert.NotEmpty(events);
@@ -37,7 +40,7 @@ public class EventsTests(ApiFixture fixture) : IClassFixture<ApiFixture>
                     },
                 }
             )
-            .ToListAsync();
+            .ToListAsync(TestContext.Current.CancellationToken);
 
         // Then
         Assert.Equal(3525, events.Count);

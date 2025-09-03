@@ -12,7 +12,11 @@ public class GadgetsTests(ApiFixture fixture) : IClassFixture<ApiFixture>
         // Given
 
         // When
-        await _client.Gadgets.DoGadgetActionAsync(TestGadgetId, "open");
+        await _client.Gadgets.DoGadgetActionAsync(
+            TestGadgetId,
+            "open",
+            TestContext.Current.CancellationToken
+        );
 
         // Then
     }
