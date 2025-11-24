@@ -1,11 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsAotCompatible>true</IsAotCompatible>
-
     <Authors>Rasmus Melchior Jacobsen</Authors>
     <Description>Unofficial .NET API Client for Akiles.</Description>
     <PackageProjectUrl>https://github.com/rmja/Akiles.ApiClient</PackageProjectUrl>
@@ -15,20 +13,20 @@
     <Version>0.0.9</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
-
   <ItemGroup>
     <InternalsVisibleTo Include="Akiles.ApiClient.Tests" />
     <None Include="..\..\README.md" Pack="true" PackagePath="">
       <Link>Properties\README.md</Link>
-    </None>	
+    </None>
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="LanguageExt.Core" Version="4.4.9" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
+    <PackageReference
+      Include="Microsoft.Extensions.DependencyInjection.Abstractions"
+      Version="9.0.8"
+    />
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.8" />
     <PackageReference Include="Refit" Version="8.0.0" />
   </ItemGroup>
-
 </Project>
