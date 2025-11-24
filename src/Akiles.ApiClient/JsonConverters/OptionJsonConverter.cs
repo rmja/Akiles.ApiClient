@@ -47,5 +47,9 @@ internal class OptionJsonConverter<T> : JsonConverter<OneOf<None, T?>>
         {
             JsonSerializer.Serialize(writer, some, options);
         }
+        else
+        {
+            writer.WriteNullValue();
+        }
     }
 }
