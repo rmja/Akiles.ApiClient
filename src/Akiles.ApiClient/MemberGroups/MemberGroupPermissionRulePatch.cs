@@ -1,14 +1,15 @@
 ﻿using System.Text.Json.Serialization;
-using LanguageExt;
+using OneOf;
+using OneOf.Types;
 
 namespace Akiles.ApiClient.MemberGroups;
 
 public record MemberGroupPermissionRulePatch
 {
-    public Option<string?> SiteId { get; set; }
-    public Option<string?> GadgetId { get; set; }
-    public Option<string?> ActionId { get; set; }
-    public Option<string?> ScheduleId { get; set; }
+    public OneOf<None, string?> SiteId { get; set; }
+    public OneOf<None, string?> GadgetId { get; set; }
+    public OneOf<None, string?> ActionId { get; set; }
+    public OneOf<None, string?> ScheduleId { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public MemberGroupPermissionRulePresence? Presence { get; set; }

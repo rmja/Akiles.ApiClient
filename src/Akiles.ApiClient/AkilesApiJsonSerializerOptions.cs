@@ -1,18 +1,30 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
-using LanguageExt;
+using OneOf;
+using OneOf.Types;
 
 namespace Akiles.ApiClient;
 
 public static class AkilesApiJsonSerializerOptions
 {
-    public static JsonSerializerOptions Value { get; } =
-        new JsonSerializerOptions(AkilesApiJsonSerializerContext.Default.Options)
+    public static JsonSerializerOptions Value { get; } = GetOptions();
+
+    private static JsonSerializerOptions GetOptions()
+    {
+        var options = new JsonSerializerOptions(AkilesApiJsonSerializerContext.Default.Options)
         {
             TypeInfoResolver = AkilesApiJsonSerializerContext.Default.WithAddedModifier(
                 ExcludeOptionNoneVariant
-            )
+            ),
         };
+
+        foreach (var converter in AkilesApiJsonSerializerContext.Default.Options.Converters)
+        {
+            options.Converters.Add(converter);
+        }
+
+        return options;
+    }
 
     private static void ExcludeOptionNoneVariant(JsonTypeInfo typeInfo)
     {
@@ -20,7 +32,8 @@ public static class AkilesApiJsonSerializerOptions
         {
             if (
                 property.PropertyType.IsGenericType
-                && property.PropertyType.GetGenericTypeDefinition() == typeof(Option<>)
+                && property.PropertyType.GetGenericTypeDefinition() == typeof(OneOf<,>)
+                && property.PropertyType.GetGenericArguments()[0] == typeof(None)
             )
             {
                 property.ShouldSerialize = static (_, value) => IsSome(value!);

@@ -14,41 +14,40 @@ namespace Akiles.ApiClient;
 
 public class AkilesApiClient : IAkilesApiClient
 {
-    private static readonly RefitSettings _refitSettings =
-        new()
+    private static readonly RefitSettings _refitSettings = new()
+    {
+        ContentSerializer = new SystemTextJsonContentSerializer(
+            AkilesApiJsonSerializerOptions.Value
+        ),
+        UrlParameterKeyFormatter = new ParameterKeyFormatter(),
+        UrlParameterFormatter = new CompositeParameterFormatter(
+            new EnumParameterFormatter<EventsExpand>(),
+            new EnumParameterFormatter<IsDeleted>(),
+            new EnumParameterFormatter<MemberGroupsExpand>(),
+            new EnumParameterFormatter<MembersExpand>(),
+            new DateTimeOffsetParameterFormatter(),
+            new DefaultUrlParameterFormatter()
+        ),
+        ExceptionFactory = async (response) =>
         {
-            ContentSerializer = new SystemTextJsonContentSerializer(
-                AkilesApiJsonSerializerOptions.Value
-            ),
-            UrlParameterKeyFormatter = new ParameterKeyFormatter(),
-            UrlParameterFormatter = new CompositeParameterFormatter(
-                new EnumParameterFormatter<EventsExpand>(),
-                new EnumParameterFormatter<IsDeleted>(),
-                new EnumParameterFormatter<MemberGroupsExpand>(),
-                new EnumParameterFormatter<MembersExpand>(),
-                new DateTimeOffsetParameterFormatter(),
-                new DefaultUrlParameterFormatter()
-            ),
-            ExceptionFactory = async (response) =>
+            if (response.IsSuccessStatusCode)
             {
-                if (response.IsSuccessStatusCode)
-                {
-                    return null;
-                }
-
-                var error = await response.Content.ReadFromJsonAsync(
-                    AkilesApiJsonSerializerContext.Default.ErrorResponse
-                );
-
-                return new AkilesApiException(error!.Message)
-                {
-                    RequestUri = response.RequestMessage!.RequestUri!,
-                    StatusCode = response.StatusCode,
-                    ErrorType = error.Type,
-                    ErrorArgs = error.Args,
-                };
+                return null;
             }
-        };
+
+            var error = await response.Content.ReadFromJsonAsync(
+                AkilesApiJsonSerializerContext.Default.ErrorResponse
+            );
+
+            return new AkilesApiException(error!.Message)
+            {
+                RequestUri = response.RequestMessage!.RequestUri!,
+                StatusCode = response.StatusCode,
+                ErrorType = error.Type,
+                ErrorArgs = error.Args,
+            };
+        },
+    };
 
     public ICards Cards { get; }
     public IDevices Devices { get; }

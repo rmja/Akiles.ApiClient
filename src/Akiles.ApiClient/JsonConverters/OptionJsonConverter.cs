@@ -1,11 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using LanguageExt;
+using OneOf;
+using OneOf.Types;
 
 namespace Akiles.ApiClient.JsonConverters;
 
-internal class OptionJsonConverter<T> : JsonConverter<Option<T>>
+internal class OptionJsonConverter<T> : JsonConverter<OneOf<None, T?>>
 {
     [UnconditionalSuppressMessage(
         "ReflectionAnalysis",
@@ -17,14 +18,13 @@ internal class OptionJsonConverter<T> : JsonConverter<Option<T>>
         "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.",
         Justification = "Inner value is referenced."
     )]
-    public override Option<T> Read(
+    public override OneOf<None, T?> Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
         JsonSerializerOptions options
     )
     {
-        var value = JsonSerializer.Deserialize<T>(ref reader, options);
-        return value;
+        return JsonSerializer.Deserialize<T>(ref reader, options);
     }
 
     [UnconditionalSuppressMessage(
@@ -39,11 +39,13 @@ internal class OptionJsonConverter<T> : JsonConverter<Option<T>>
     )]
     public override void Write(
         Utf8JsonWriter writer,
-        Option<T> value,
+        OneOf<None, T?> value,
         JsonSerializerOptions options
     )
     {
-        var innerValue = (T)value;
-        JsonSerializer.Serialize(writer, innerValue, options);
+        if (value.TryPickT1(out var some, out _))
+        {
+            JsonSerializer.Serialize(writer, some, options);
+        }
     }
 }
