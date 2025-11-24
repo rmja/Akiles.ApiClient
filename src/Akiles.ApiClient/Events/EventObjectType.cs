@@ -5,6 +5,7 @@ public enum EventObjectType
     Device,
     Gadget,
     GadgetAction,
+    GadgetSignal,
     Member,
     MemberEmail,
     MemberMagicLink,
@@ -17,5 +18,5 @@ public enum EventObjectType
     Site,
     Webhook,
     Hardware,
-    Card
+    Card,
 }

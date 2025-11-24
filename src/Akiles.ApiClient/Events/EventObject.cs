@@ -6,6 +6,7 @@ public record EventObject
     public string? DeviceId { get; set; }
     public string? GadgetId { get; set; }
     public string? GadgetActionId { get; set; }
+    public string? GadgetSignalId { get; set; }
     public string? MemberId { get; set; }
     public string? MemberEmailId { get; set; }
     public string? MemberMagicLinkId { get; set; }
