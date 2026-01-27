@@ -1,35 +1,21 @@
-﻿using Refit;
+﻿using Akiles.ApiClient.Members;
+using Cursor;
+using Refit;
 
-namespace Akiles.ApiClient.Members;
+namespace Akiles.ApiClient;
 
 public interface IMembers
 {
     [Get("/members")]
+    [GenerateEnumerator]
     Task<PagedList<Member>> ListMembersAsync(
-        string? cursor,
-        int? limit,
-        Sort<Member>? sort,
+        Sort<Member>? sort = null,
         [Query(delimiter: "")] ListMembersFilter? filter = null,
         MembersExpand expand = MembersExpand.None,
+        string? cursor = null,
+        int? limit = null,
         CancellationToken cancellationToken = default
     );
-
-    IAsyncEnumerable<Member> ListMembersAsync(
-        Sort<Member>? sort = null,
-        ListMembersFilter? filter = null,
-        MembersExpand expand = MembersExpand.None
-    ) =>
-        new PaginationEnumerable<Member>(
-            (cursor, cancellationToken) =>
-                ListMembersAsync(
-                    cursor,
-                    Constants.DefaultPaginationLimit,
-                    sort,
-                    filter,
-                    expand,
-                    cancellationToken
-                )
-        );
 
     [Get("/members/{memberId}")]
     Task<Member> GetMemberAsync(
@@ -62,31 +48,15 @@ public interface IMembers
     );
 
     [Get("/members/{memberId}/emails")]
+    [GenerateEnumerator]
     Task<PagedList<MemberEmail>> ListEmailsAsync(
         string memberId,
-        string? cursor,
-        int? limit,
-        Sort<MemberEmail>? sort,
+        Sort<MemberEmail>? sort = null,
         string? q = null,
+        string? cursor = null,
+        int? limit = null,
         CancellationToken cancellationToken = default
     );
-
-    IAsyncEnumerable<MemberEmail> ListEmailsAsync(
-        string memberId,
-        Sort<MemberEmail>? sort = null,
-        string? q = null
-    ) =>
-        new PaginationEnumerable<MemberEmail>(
-            (cursor, cancellationToken) =>
-                ListEmailsAsync(
-                    memberId,
-                    cursor,
-                    Constants.DefaultPaginationLimit,
-                    sort,
-                    q,
-                    cancellationToken
-                )
-        );
 
     [Patch("/members/{memberId}/emails/{memberEmailId}")]
     Task<MemberEmail> EditEmailAsync(
@@ -111,25 +81,14 @@ public interface IMembers
     );
 
     [Get("/members/{memberId}/cards")]
+    [GenerateEnumerator]
     Task<PagedList<MemberCard>> ListCardsAsync(
         string memberId,
-        string? cursor,
-        int? limit,
-        Sort<MemberCard>? sort,
+        Sort<MemberCard>? sort = null,
+        string? cursor = null,
+        int? limit = null,
         CancellationToken cancellationToken = default
     );
-
-    IAsyncEnumerable<MemberCard> ListCardsAsync(string memberId, Sort<MemberCard>? sort = null) =>
-        new PaginationEnumerable<MemberCard>(
-            (cursor, cancellationToken) =>
-                ListCardsAsync(
-                    memberId,
-                    cursor,
-                    Constants.DefaultPaginationLimit,
-                    sort,
-                    cancellationToken
-                )
-        );
 
     [Get("/members/{memberId}/cards/{memberCardId}")]
     Task<MemberCard> GetCardAsync(
@@ -161,28 +120,14 @@ public interface IMembers
     );
 
     [Get("/members/{memberId}/group_associations")]
+    [GenerateEnumerator]
     Task<PagedList<MemberGroupAssociation>> ListGroupAssociationsAsync(
         string memberId,
-        string? cursor,
-        int? limit,
-        Sort<MemberGroupAssociation>? sort,
+        Sort<MemberGroupAssociation>? sort = null,
+        string? cursor = null,
+        int? limit = null,
         CancellationToken cancellationToken = default
     );
-
-    IAsyncEnumerable<MemberGroupAssociation> ListGroupAssociationsAsync(
-        string memberId,
-        Sort<MemberGroupAssociation>? sort = null
-    ) =>
-        new PaginationEnumerable<MemberGroupAssociation>(
-            (cursor, cancellationToken) =>
-                ListGroupAssociationsAsync(
-                    memberId,
-                    cursor,
-                    Constants.DefaultPaginationLimit,
-                    sort,
-                    cancellationToken
-                )
-        );
 
     [Get("/members/{memberId}/group_associations/{memberGroupAssociationId}")]
     Task<MemberGroupAssociation> GetGroupAssociationAsync(

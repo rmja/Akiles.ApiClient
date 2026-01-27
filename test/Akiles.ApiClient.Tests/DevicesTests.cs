@@ -11,7 +11,7 @@ public class DevicesTests(ApiFixture fixture) : IClassFixture<ApiFixture>
 
         // When
         var devices = await _client
-            .Devices.ListDevicesAsync()
+            .Devices.EnumerateDevicesAsync()
             .ToListAsync(TestContext.Current.CancellationToken);
 
         // Then

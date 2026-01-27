@@ -1,27 +1,19 @@
-﻿using Refit;
+﻿using Akiles.ApiClient.MemberGroups;
+using Cursor;
+using Refit;
 
-namespace Akiles.ApiClient.MemberGroups;
+namespace Akiles.ApiClient;
 
 public interface IMemberGroups
 {
     [Get("/member_groups")]
+    [GenerateEnumerator]
     Task<PagedList<MemberGroup>> ListMemberGroupsAsync(
-        string? cursor,
-        int? limit,
-        Sort<MemberGroup>? sort,
+        Sort<MemberGroup>? sort = null,
+        string? cursor = null,
+        int? limit = null,
         CancellationToken cancellationToken = default
     );
-
-    IAsyncEnumerable<MemberGroup> ListMemberGroupsAsync(Sort<MemberGroup>? sort = null) =>
-        new PaginationEnumerable<MemberGroup>(
-            (cursor, cancellationToken) =>
-                ListMemberGroupsAsync(
-                    cursor,
-                    Constants.DefaultPaginationLimit,
-                    sort,
-                    cancellationToken
-                )
-        );
 
     [Get("/member_groups/{memberGroupId}")]
     Task<MemberGroup> GetMemberGroupAsync(

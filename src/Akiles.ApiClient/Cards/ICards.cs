@@ -1,22 +1,19 @@
-﻿using Refit;
+﻿using Akiles.ApiClient.Cards;
+using Cursor;
+using Refit;
 
-namespace Akiles.ApiClient.Cards;
+namespace Akiles.ApiClient;
 
 public interface ICards
 {
     [Get("/cards")]
+    [GenerateEnumerator]
     Task<PagedList<Card>> ListCardsAsync(
-        string? cursor,
-        int? limit,
-        Sort<Card>? sort,
+        Sort<Card>? sort = null,
+        string? cursor = null,
+        int? limit = null,
         CancellationToken cancellationToken = default
     );
-
-    IAsyncEnumerable<Card> ListCardsAsync(Sort<Card>? sort = null) =>
-        new PaginationEnumerable<Card>(
-            (cursor, cancellationToken) =>
-                ListCardsAsync(cursor, Constants.DefaultPaginationLimit, sort, cancellationToken)
-        );
 
     [Get("/cards/{cardId}")]
     Task<Card> GetCardAsync(string cardId, CancellationToken cancellationToken = default);

@@ -1,22 +1,19 @@
-﻿using Refit;
+﻿using Akiles.ApiClient.Devices;
+using Cursor;
+using Refit;
 
-namespace Akiles.ApiClient.Devices;
+namespace Akiles.ApiClient;
 
 public interface IDevices
 {
     [Get("/devices")]
+    [GenerateEnumerator]
     Task<PagedList<Device>> ListDevicesAsync(
-        string? cursor,
-        int? limit,
-        Sort<Device>? sort,
+        Sort<Device>? sort = null,
+        string? cursor = null,
+        int? limit = null,
         CancellationToken cancellationToken = default
     );
-
-    IAsyncEnumerable<Device> ListDevicesAsync(Sort<Device>? sort = null) =>
-        new PaginationEnumerable<Device>(
-            (cursor, cancellationToken) =>
-                ListDevicesAsync(cursor, Constants.DefaultPaginationLimit, sort, cancellationToken)
-        );
 
     [Get("/devices/{deviceId}")]
     Task<Device> GetDeviceAsync(string deviceId, CancellationToken cancellationToken = default);

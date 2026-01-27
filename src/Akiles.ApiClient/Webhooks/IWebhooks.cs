@@ -1,22 +1,19 @@
-﻿using Refit;
+﻿using Akiles.ApiClient.Webhooks;
+using Cursor;
+using Refit;
 
-namespace Akiles.ApiClient.Webhooks;
+namespace Akiles.ApiClient;
 
 public interface IWebhooks
 {
     [Get("/webhooks")]
+    [GenerateEnumerator]
     Task<PagedList<Webhook>> ListWebhooksAsync(
-        string? cursor,
-        int? limit,
         Sort<Webhook>? sort,
+        string? cursor = null,
+        int? limit = null,
         CancellationToken cancellationToken = default
     );
-
-    IAsyncEnumerable<Webhook> ListWebhooksAsync(Sort<Webhook>? sort = null) =>
-        new PaginationEnumerable<Webhook>(
-            (cursor, cancellationToken) =>
-                ListWebhooksAsync(cursor, Constants.DefaultPaginationLimit, sort, cancellationToken)
-        );
 
     [Get("/webhooks/{webhookId}")]
     Task<Webhook> GetWebhookAsync(string webhookId, CancellationToken cancellationToken = default);

@@ -11,7 +11,7 @@ public class EventsTests(ApiFixture fixture) : IClassFixture<ApiFixture>
 
         // When
         var events = await _client
-            .Events.ListEventsAsync()
+            .Events.EnumerateEventsAsync()
             .TakeAsync(200)
             .ToListAsync(TestContext.Current.CancellationToken);
 
@@ -30,7 +30,7 @@ public class EventsTests(ApiFixture fixture) : IClassFixture<ApiFixture>
 
         // When
         var events = await _client
-            .Events.ListEventsAsync(
+            .Events.EnumerateEventsAsync(
                 filter: new()
                 {
                     CreatedAt = new()

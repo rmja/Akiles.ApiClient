@@ -1,33 +1,19 @@
-﻿using Refit;
+﻿using Akiles.ApiClient.Events;
+using Cursor;
+using Refit;
 
-namespace Akiles.ApiClient.Events;
+namespace Akiles.ApiClient;
 
 public interface IEvents
 {
     [Get("/events")]
+    [GenerateEnumerator]
     Task<PagedList<Event>> ListEventsAsync(
-        string? cursor,
-        int? limit,
-        Sort<Event>? sort,
+        Sort<Event>? sort = null,
         [Query(delimiter: "")] ListEventsFilter? filter = null,
         EventsExpand expand = EventsExpand.None,
+        string? cursor = null,
+        int? limit = null,
         CancellationToken cancellationToken = default
     );
-
-    IAsyncEnumerable<Event> ListEventsAsync(
-        Sort<Event>? sort = null,
-        ListEventsFilter? filter = null,
-        EventsExpand expand = EventsExpand.None
-    ) =>
-        new PaginationEnumerable<Event>(
-            (cursor, cancellationToken) =>
-                ListEventsAsync(
-                    cursor,
-                    Constants.DefaultPaginationLimit,
-                    sort,
-                    filter,
-                    expand,
-                    cancellationToken
-                )
-        );
 }

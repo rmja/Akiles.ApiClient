@@ -11,7 +11,7 @@ public class CardsTests(ApiFixture fixture) : IClassFixture<ApiFixture>
 
         // When
         var cards = await _client
-            .Cards.ListCardsAsync()
+            .Cards.EnumerateCardsAsync()
             .ToListAsync(TestContext.Current.CancellationToken);
 
         // Then

@@ -1,13 +1,9 @@
 ﻿using System.Net.Http.Json;
-using Akiles.ApiClient.Cards;
-using Akiles.ApiClient.Devices;
 using Akiles.ApiClient.Events;
 using Akiles.ApiClient.Gadgets;
 using Akiles.ApiClient.MemberGroups;
 using Akiles.ApiClient.Members;
 using Akiles.ApiClient.ParameterFormatters;
-using Akiles.ApiClient.Schedules;
-using Akiles.ApiClient.Webhooks;
 using Refit;
 
 namespace Akiles.ApiClient;

@@ -13,7 +13,7 @@ public class SchedulesTests(ApiFixture fixture) : IClassFixture<ApiFixture>
 
         // When
         var schedules = await _client
-            .Schedules.ListSchedulesAsync()
+            .Schedules.EnumerateSchedulesAsync()
             .ToListAsync(TestContext.Current.CancellationToken);
 
         // Then

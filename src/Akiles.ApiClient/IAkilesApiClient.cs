@@ -1,13 +1,4 @@
-﻿using Akiles.ApiClient.Cards;
-using Akiles.ApiClient.Devices;
-using Akiles.ApiClient.Events;
-using Akiles.ApiClient.Gadgets;
-using Akiles.ApiClient.MemberGroups;
-using Akiles.ApiClient.Members;
-using Akiles.ApiClient.Schedules;
-using Akiles.ApiClient.Webhooks;
-
-namespace Akiles.ApiClient;
+﻿namespace Akiles.ApiClient;
 
 public interface IAkilesApiClient
 {

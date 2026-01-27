@@ -13,7 +13,7 @@ public class MemberGroupsTests(ApiFixture fixture) : IClassFixture<ApiFixture>
 
         // When
         var groups = await _client
-            .MemberGroups.ListMemberGroupsAsync()
+            .MemberGroups.EnumerateMemberGroupsAsync()
             .ToListAsync(TestContext.Current.CancellationToken);
 
         // Then

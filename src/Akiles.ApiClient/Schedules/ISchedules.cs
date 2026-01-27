@@ -1,27 +1,19 @@
-﻿using Refit;
+﻿using Akiles.ApiClient.Schedules;
+using Cursor;
+using Refit;
 
-namespace Akiles.ApiClient.Schedules;
+namespace Akiles.ApiClient;
 
 public interface ISchedules
 {
     [Get("/schedules")]
+    [GenerateEnumerator]
     Task<PagedList<Schedule>> ListSchedulesAsync(
-        string? cursor,
-        int? limit,
-        Sort<Schedule>? sort,
+        Sort<Schedule>? sort = null,
+        string? cursor = null,
+        int? limit = null,
         CancellationToken cancellationToken = default
     );
-
-    IAsyncEnumerable<Schedule> ListSchedulesAsync(Sort<Schedule>? sort = null) =>
-        new PaginationEnumerable<Schedule>(
-            (cursor, cancellationToken) =>
-                ListSchedulesAsync(
-                    cursor,
-                    Constants.DefaultPaginationLimit,
-                    sort,
-                    cancellationToken
-                )
-        );
 
     [Get("/schedules/{scheduleId}")]
     public Task<Schedule> GetScheduleAsync(

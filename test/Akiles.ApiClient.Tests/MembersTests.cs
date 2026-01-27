@@ -13,7 +13,7 @@ public class MembersTests(ApiFixture fixture) : IClassFixture<ApiFixture>
 
         // When
         var members = await _client
-            .Members.ListMembersAsync()
+            .Members.EnumerateMembersAsync()
             .ToListAsync(TestContext.Current.CancellationToken);
 
         // Then
@@ -27,7 +27,7 @@ public class MembersTests(ApiFixture fixture) : IClassFixture<ApiFixture>
 
         // When
         var members = await _client
-            .Members.ListMembersAsync(expand: MembersExpand.Emails)
+            .Members.EnumerateMembersAsync(expand: MembersExpand.Emails)
             .ToListAsync(TestContext.Current.CancellationToken);
 
         // Then

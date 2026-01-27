@@ -1,4 +1,6 @@
-﻿namespace Akiles.ApiClient.Gadgets;
+﻿using Akiles.ApiClient.Gadgets;
+
+namespace Akiles.ApiClient;
 
 public interface IGadgets
 {
