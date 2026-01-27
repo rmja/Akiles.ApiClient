@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/Akiles.ApiClient/Akiles.ApiClient.csproj" />
+  <Project Path="test/Akiles.ApiClient.Tests/Akiles.ApiClient.Tests.csproj" />
+</Solution>
