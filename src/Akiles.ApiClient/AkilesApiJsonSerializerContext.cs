@@ -70,25 +70,12 @@ namespace Akiles.ApiClient;
 [JsonSerializable(typeof(WebhookFilterRule))]
 [JsonSourceGenerationOptions(
     PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower,
-    Converters =
-    [
+    Converters = [
         typeof(TimeOnlyJsonConverter),
         typeof(OptionJsonConverter<bool>),
         typeof(OptionJsonConverter<string>),
         typeof(OptionJsonConverter<DateTime>),
         typeof(OptionJsonConverter<DateTime?>),
-        typeof(PagedListJsonConverter<Card>),
-        typeof(PagedListJsonConverter<Device>),
-        typeof(PagedListJsonConverter<Event>),
-        typeof(PagedListJsonConverter<Gadget>),
-        typeof(PagedListJsonConverter<MemberGroup>),
-        typeof(PagedListJsonConverter<MemberCard>),
-        typeof(PagedListJsonConverter<MemberEmail>),
-        typeof(PagedListJsonConverter<MemberGroupAssociation>),
-        typeof(PagedListJsonConverter<MemberPin>),
-        typeof(PagedListJsonConverter<Member>),
-        typeof(PagedListJsonConverter<Schedule>),
-        typeof(PagedListJsonConverter<Webhook>),
         typeof(SnakeCaseLowerJsonStringEnumConverter<EventObjectType>),
         typeof(SnakeCaseLowerJsonStringEnumConverter<EventVerb>),
         typeof(SnakeCaseLowerJsonStringEnumConverter<MemberGroupPermissionRulePresence>),

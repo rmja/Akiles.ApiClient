@@ -20,7 +20,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Cursor" Version="0.0.1" />
+    <PackageReference Include="Cursor" Version="0.0.2" />
     <PackageReference Include="OneOf" Version="3.0.271" />
     <PackageReference Include="Refit" Version="9.0.2" />
   </ItemGroup>
