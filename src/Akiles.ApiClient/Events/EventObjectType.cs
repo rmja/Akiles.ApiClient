@@ -16,6 +16,7 @@ public enum EventObjectType
     MemberToken,
     Organization,
     Site,
+    Tag,
     Webhook,
     Hardware,
     Card,
