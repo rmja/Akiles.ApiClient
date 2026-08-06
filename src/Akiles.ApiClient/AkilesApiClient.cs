@@ -59,13 +59,15 @@ public class AkilesApiClient : IAkilesApiClient
         httpClient.BaseAddress ??= new("https://api.akiles.app/v2");
         httpClient.DefaultRequestHeaders.Authorization = new("Bearer", accessToken);
 
-        Cards = RestService.For<ICards>(httpClient, _refitSettings);
-        Devices = RestService.For<IDevices>(httpClient, _refitSettings);
-        Events = RestService.For<IEvents>(httpClient, _refitSettings);
-        Gadgets = new GadgetsWrapper(RestService.For<IGadgetsInternal>(httpClient, _refitSettings));
-        Members = RestService.For<IMembers>(httpClient, _refitSettings);
-        MemberGroups = RestService.For<IMemberGroups>(httpClient, _refitSettings);
-        Schedules = RestService.For<ISchedules>(httpClient, _refitSettings);
-        Webhooks = RestService.For<IWebhooks>(httpClient, _refitSettings);
+        Cards = RestService.ForGenerated<ICards>(httpClient, _refitSettings);
+        Devices = RestService.ForGenerated<IDevices>(httpClient, _refitSettings);
+        Events = RestService.ForGenerated<IEvents>(httpClient, _refitSettings);
+        Gadgets = new GadgetsWrapper(
+            RestService.ForGenerated<IGadgetsInternal>(httpClient, _refitSettings)
+        );
+        Members = RestService.ForGenerated<IMembers>(httpClient, _refitSettings);
+        MemberGroups = RestService.ForGenerated<IMemberGroups>(httpClient, _refitSettings);
+        Schedules = RestService.ForGenerated<ISchedules>(httpClient, _refitSettings);
+        Webhooks = RestService.ForGenerated<IWebhooks>(httpClient, _refitSettings);
     }
 }
